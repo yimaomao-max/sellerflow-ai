@@ -6,6 +6,8 @@
 
 **从供应商 CSV / 采集预览，到 AI 标题、多语言翻译、批量修整、Shopify 规范校验，一条流水线搞定 Listing。**
 
+**English: [README.en.md](./README.en.md)**
+
 [![Next.js 14](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![React 18](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 [![License](https://img.shields.io/badge/License-Private%20MVP-blue?style=flat-square)]()
@@ -171,7 +173,7 @@ flowchart LR
 4. **导出**（默认仅导出无致命错误的商品）  
 5. 在 Shopify 后台 → Products → Import 验证  
 
-详细图文步骤见 **[用户指南](docs/USER-GUIDE.md)**。
+详细图文步骤见 **[用户指南](docs/USER-GUIDE.md)** · [User guide (EN)](docs/USER-GUIDE.en.md)
 
 ---
 
@@ -256,7 +258,7 @@ docs/                      # PRD、架构、用户指南
 
 | 文档 | 内容 |
 | --- | --- |
-| [用户指南](docs/USER-GUIDE.md) | 逐步操作、FAQ、示例 CSV 说明 |
+| [用户指南](docs/USER-GUIDE.md) · [EN](docs/USER-GUIDE.en.md) | 逐步操作、FAQ、示例 CSV |
 | [PRD V1](docs/PRD-V1.md) | 产品需求与版本边界 |
 | [技术架构](docs/TECH-ARCHITECTURE.md) | 目标态：插件 + SaaS + 数据库 |
 | [MVP 任务清单](docs/MVP-TASK-LIST.md) | 里程碑拆解 |

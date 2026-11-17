@@ -2,6 +2,8 @@
 
 > 手把手教你从「零数据」到「可导入 Shopify 的 CSV」。预计阅读 10 分钟，实操 5 分钟。
 
+**English: [USER-GUIDE.en.md](./USER-GUIDE.en.md)**
+
 ---
 
 ## 目录
