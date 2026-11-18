@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { emptyProduct, sampleProducts, LANGUAGES, langLabel, guessHandle } from "@/lib/product";
 import { validateProducts } from "@/lib/validate";
-import { ImportButton, ExportButton } from "@/components/IoButtons";
+import { ImportButton, ExportButton, ImportCaptureButton } from "@/components/IoButtons";
 import AiPanel from "@/components/AiPanel";
 import BulkEditBar from "@/components/BulkEditBar";
 import ProductDrawer from "@/components/ProductDrawer";
@@ -14,7 +14,7 @@ import SettingsModal from "@/components/SettingsModal";
 const LS_KEY = "sellerflow.products.v1";
 const LS_SETTINGS = "sellerflow.settings.v1";
 
-const DEFAULT_SETTINGS = { baseUrl: "", apiKey: "", model: "" };
+const DEFAULT_SETTINGS = { baseUrl: "", apiKey: "", model: "", brandVoice: "neutral" };
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -30,6 +30,7 @@ export default function Home() {
   const [showSettings, setShowSettings] = useState(false);
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
   const [toasts, setToasts] = useState([]);
+  const [demoBanner, setDemoBanner] = useState(false);
   const tableEndRef = useRef(null);
 
   // 初始化：读取 localStorage，空则载入示例数据
@@ -43,6 +44,13 @@ export default function Home() {
     } catch {
       setProducts(sampleProducts());
     }
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/health")
+      .then((r) => r.json())
+      .then((h) => setDemoBanner(!!h.demo || !!h.forceMock))
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -169,6 +177,7 @@ export default function Home() {
           body: JSON.stringify({
             task, products: slim, mock: useMock,
             titleLang, targetLangs,
+            brandVoice: settings.brandVoice || "neutral",
             config: { ...settings, useMock: false },
           }),
         });
@@ -206,7 +215,9 @@ export default function Home() {
         );
         ok += chunk.length;
       }
-      toast(`AI ${task === "title" ? "标题生成" : "翻译"}完成：${ok} 个商品`);
+      const label =
+        task === "title" ? "标题生成" : task === "rewrite" ? "描述重写" : "翻译";
+      toast(`AI ${label}完成：${ok} 个商品`);
       setAiOpen(false);
     } catch (e) {
       toast(`AI 处理失败：${e.message}`, "err");
@@ -234,7 +245,17 @@ export default function Home() {
           )}
         </div>
         <div className="header-actions">
+          <Link href="/welcome" style={{ textDecoration: "none" }}>
+            <button type="button">关于</button>
+          </Link>
           <ImportButton
+            onImport={(data, msg) => {
+              if (!data) return toast(msg, "err");
+              setProducts((prev) => [...prev, ...data.products]);
+              toast(msg);
+            }}
+          />
+          <ImportCaptureButton
             onImport={(data, msg) => {
               if (!data) return toast(msg, "err");
               setProducts((prev) => [...prev, ...data.products]);
@@ -254,6 +275,14 @@ export default function Home() {
         </div>
       </header>
 
+      {demoBanner && (
+        <div className="demo-banner">
+          演示环境：AI 使用模拟模式。本地部署可配置 API Key；详见{" "}
+          <a href="https://github.com/yimaomao-max/sellerflow-ai/issues/new/choose" target="_blank" rel="noreferrer">
+            反馈 / 等候名单
+          </a>
+        </div>
+      )}
       <main className="main">
         <div className="toolbar">
           <input

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { BRAND_VOICES } from "@/lib/brandVoice";
 
 // AI 设置：OpenAI 兼容接口配置
 export default function SettingsModal({ settings, onSave, onClose }) {
@@ -43,6 +44,19 @@ export default function SettingsModal({ settings, onSave, onClose }) {
               placeholder="gpt-4o-mini"
               onChange={(e) => setForm({ ...form, model: e.target.value })}
             />
+          </div>
+          <div className="form-row">
+            <label>品牌语气（AI 标题 / 描述 / 翻译）</label>
+            <select
+              value={form.brandVoice || "neutral"}
+              onChange={(e) => setForm({ ...form, brandVoice: e.target.value })}
+            >
+              {BRAND_VOICES.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.label} — {v.hint}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="modal-foot">

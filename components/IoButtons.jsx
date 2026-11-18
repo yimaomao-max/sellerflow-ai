@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { parseProductsCsv, buildExportCsv } from "@/lib/csv";
+import { parseCapturePayload } from "@/lib/captureImport";
 
 export function ImportButton({ onImport }) {
   const fileRef = useRef(null);
@@ -28,6 +29,33 @@ export function ImportButton({ onImport }) {
     <>
       <button onClick={() => fileRef.current?.click()}>⬆ 导入 CSV</button>
       <input ref={fileRef} type="file" accept=".csv,text/csv" hidden onChange={handleFile} />
+    </>
+  );
+}
+
+/** 插件采集 JSON（chrome 插件导出 / 手动保存） */
+export function ImportCaptureButton({ onImport }) {
+  const fileRef = useRef(null);
+
+  const handleFile = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    try {
+      const raw = JSON.parse(await file.text());
+      const products = parseCapturePayload(raw);
+      onImport({ products }, `成功导入采集 JSON：${products.length} 个商品`);
+    } catch (err) {
+      onImport(null, err.message || "JSON 解析失败");
+    }
+  };
+
+  return (
+    <>
+      <button type="button" onClick={() => fileRef.current?.click()}>
+        ⬆ 采集 JSON
+      </button>
+      <input ref={fileRef} type="file" accept=".json,application/json" hidden onChange={handleFile} />
     </>
   );
 }

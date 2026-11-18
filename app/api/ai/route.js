@@ -11,7 +11,7 @@ export async function POST(req) {
     return NextResponse.json({ error: "请求体不是合法 JSON" }, { status: 400 });
   }
 
-  const { task, products, config, mock } = payload;
+  const { task, products, config, mock, brandVoice } = payload;
   if (!["title", "translate", "rewrite"].includes(task)) {
     return NextResponse.json({ error: "task 必须是 title、translate 或 rewrite" }, { status: 400 });
   }
@@ -21,9 +21,15 @@ export async function POST(req) {
 
   // 优先级：请求指定 mock > 客户端配置了 key > 服务端环境变量 > 模拟模式
   const cfg = config || {};
+  const forceMock =
+    process.env.SELLERFLOW_FORCE_MOCK === "1" ||
+    process.env.SELLERFLOW_FORCE_MOCK === "true";
   const hasKey = !cfg.useMock && (cfg.apiKey || process.env.OPENAI_API_KEY);
-  if (mock || !hasKey) {
-    return NextResponse.json(mockGenerate(payload));
+  const runMock = mock || forceMock || !hasKey;
+  const llmPayload = { ...payload, brandVoice: brandVoice || cfg.brandVoice || "neutral" };
+
+  if (runMock) {
+    return NextResponse.json(mockGenerate(llmPayload));
   }
 
   try {
@@ -33,7 +39,7 @@ export async function POST(req) {
         baseUrl: cfg.baseUrl || process.env.OPENAI_BASE_URL,
         model: cfg.model || process.env.OPENAI_MODEL,
       },
-      payload
+      llmPayload
     );
     return NextResponse.json(result);
   } catch (e) {

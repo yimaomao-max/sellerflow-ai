@@ -60,9 +60,11 @@ npm install
 npm run dev
 ```
 
-浏览器打开 **[http://localhost:3000](http://localhost:3000)**。
+浏览器打开 **[http://localhost:3000](http://localhost:3000)**（落地页：[`/welcome`](/welcome)）。
 
 > 首次进入会自动载入 **3 条示例商品**，可直接点「AI 批量处理」「校验」「导出」走完整闭环，无需准备 CSV。
+
+**Chrome 采集（M1）**：加载仓库 [`extension/`](extension/README.md) → AliExpress 商品页采集 → 下载 JSON → 工作台 **「采集 JSON」** 导入。
 
 ### 生产构建
 

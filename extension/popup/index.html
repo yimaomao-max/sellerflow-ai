@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SellerFlow Capture</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <strong>SellerFlow</strong> Capture
+    </header>
+    <div id="status" class="status">正在读取当前标签页…</div>
+    <pre id="preview" class="preview hidden"></pre>
+    <div class="actions">
+      <button id="btnExtract" type="button">重新采集</button>
+      <button id="btnDownload" type="button" class="primary" disabled>下载 JSON</button>
+    </div>
+    <p class="hint">
+      在工作台点击「采集 JSON」导入本文件。云端同步（/api/capture）将在 M2 上线。
+    </p>
+    <script src="popup.js"></script>
+  </body>
+</html>

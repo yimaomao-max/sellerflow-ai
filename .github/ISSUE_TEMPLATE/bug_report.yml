@@ -1,0 +1,33 @@
+name: Bug 报告
+description: 功能异常或数据错误
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: 感谢反馈。请尽量附上复现步骤；CSV 样本可脱敏。
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      placeholder: "1. 导入 xxx.csv\n2. 点击 AI …"
+    validations:
+      required: true
+  - type: dropdown
+    id: env
+    attributes:
+      label: 环境
+      options:
+        - 本地 npm run dev
+        - 线上 Demo
+        - 其他
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为
+    validations:
+      required: true

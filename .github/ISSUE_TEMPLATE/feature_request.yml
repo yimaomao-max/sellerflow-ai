@@ -1,0 +1,25 @@
+name: 功能建议
+description: 新能力或体验改进
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 你想解决什么问题？
+      description: 例如：批量改价、某平台 CSV 表头、插件采集某站点
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: 你期望的方案（可选）
+  - type: dropdown
+    id: persona
+    attributes:
+      label: 你更接近哪类卖家？
+      options:
+        - Shopify 小卖家 / Dropshipping
+        - 代运营 / 服务商
+        - 开发者 / 贡献者
+        - 其他
