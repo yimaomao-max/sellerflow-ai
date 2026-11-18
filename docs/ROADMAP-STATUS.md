@@ -1,6 +1,6 @@
 # 路线图执行状态
 
-> 与运营规划同步更新。最后更新：P0 + M1 起步批次。
+> 与运营规划同步更新。最后更新：M1 v0.2 + M2 加价工具。
 
 ## 已完成
 
@@ -13,15 +13,18 @@
 | P0 品牌语气 | 设置内 4 种预设 → AI system prompt |
 | M1 插件骨架 | `extension/` MV3 + AliExpress content 提取 |
 | M1 桥接 | 工作台 **采集 JSON** 导入（`lib/captureImport.js`） |
+| M1 T1.8 | 插件可编辑 popup + 图片勾选 + **发送到工作台** |
+| M2 加价 | `lib/pricing.js` + 选中商品快速加价条 |
+| 部署 | `vercel.json` 就绪 |
 
 ## 进行中 / 下一步
 
 | 优先级 | 任务 | 里程碑 |
 | --- | --- | --- |
 | 1 | Vercel 部署 + README Demo 链接 | P0 |
-| 2 | 插件 popup 字段编辑 + 图片勾选 | M1 T1.8 |
-| 3 | `POST /api/capture` 桩 + Supabase Auth | M2 |
-| 4 | Alibaba / CJ 适配器 | M1 |
+| 2 | Supabase Auth + capture 持久化 | M2 |
+| 3 | Alibaba / CJ 适配器 | M1 |
+| 4 | GitHub Actions CI（需 workflow 授权） | P0 |
 | 5 | Stripe + 额度 | M5 |
 
 ## 部署提示（Vercel）

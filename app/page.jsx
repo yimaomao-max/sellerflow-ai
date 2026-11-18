@@ -3,10 +3,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { emptyProduct, sampleProducts, LANGUAGES, langLabel, guessHandle } from "@/lib/product";
+import { parseCapturePayload } from "@/lib/captureImport";
 import { validateProducts } from "@/lib/validate";
 import { ImportButton, ExportButton, ImportCaptureButton } from "@/components/IoButtons";
 import AiPanel from "@/components/AiPanel";
 import BulkEditBar from "@/components/BulkEditBar";
+import PricingQuickApply from "@/components/PricingQuickApply";
 import ProductDrawer from "@/components/ProductDrawer";
 import ValidationPanel from "@/components/ValidationPanel";
 import SettingsModal from "@/components/SettingsModal";
@@ -51,6 +53,21 @@ export default function Home() {
       .then((r) => r.json())
       .then((h) => setDemoBanner(!!h.demo || !!h.forceMock))
       .catch(() => {});
+  }, []);
+
+  // Chrome 插件「发送到工作台」通过 executeScript 派发此事件
+  useEffect(() => {
+    const onCapture = (e) => {
+      try {
+        const added = parseCapturePayload(e.detail);
+        setProducts((prev) => [...prev, ...added]);
+        toast(`插件已推送 ${added.length} 个商品`);
+      } catch (err) {
+        toast(err.message || "采集数据无效", "err");
+      }
+    };
+    window.addEventListener("sellerflow-capture", onCapture);
+    return () => window.removeEventListener("sellerflow-capture", onCapture);
   }, []);
 
   useEffect(() => {
@@ -148,6 +165,18 @@ export default function Home() {
       })
     );
     toast(`已对 ${selected.size} 个商品执行批量操作`);
+  };
+
+  const applyPricing = (priceFn) => {
+    setProducts((prev) =>
+      prev.map((p) => {
+        if (!selected.has(p.id)) return p;
+        const next = priceFn(p);
+        if (next == null || next === "") return p;
+        return { ...p, price: String(next) };
+      })
+    );
+    toast(`已对 ${selected.size} 个商品更新售价`);
   };
 
   // ===== AI 处理 =====
@@ -475,12 +504,15 @@ export default function Home() {
         </div>
 
         {selected.size > 0 && (
-          <BulkEditBar
-            count={selected.size}
-            onApply={applyBulk}
-            onClear={() => setSelected(new Set())}
-            onOpenAi={() => openAi(products.filter((p) => selected.has(p.id)))}
-          />
+          <>
+            <BulkEditBar
+              count={selected.size}
+              onApply={applyBulk}
+              onClear={() => setSelected(new Set())}
+              onOpenAi={() => openAi(products.filter((p) => selected.has(p.id)))}
+            />
+            <PricingQuickApply count={selected.size} onApply={applyPricing} />
+          </>
         )}
         <div ref={tableEndRef} />
       </main>

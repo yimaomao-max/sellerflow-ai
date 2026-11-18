@@ -1,14 +1,20 @@
 {
   "manifest_version": 3,
   "name": "SellerFlow AI Capture",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Capture AliExpress product pages into SellerFlow AI workbench (M1 MVP).",
   "permissions": ["activeTab", "storage", "scripting"],
   "host_permissions": [
     "https://*.aliexpress.com/*",
     "https://www.aliexpress.com/*",
-    "https://aliexpress.com/*"
+    "https://aliexpress.com/*",
+    "http://localhost:3000/*",
+    "http://127.0.0.1:3000/*"
   ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
   "action": {
     "default_title": "SellerFlow Capture",
     "default_popup": "popup/index.html"

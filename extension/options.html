@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SellerFlow 设置</title>
+    <style>
+      body { font-family: system-ui, sans-serif; max-width: 480px; margin: 24px auto; padding: 0 16px; }
+      label { display: block; font-size: 13px; margin-bottom: 6px; }
+      input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 8px; }
+      button { margin-top: 12px; padding: 8px 16px; background: #4f46e5; color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+      p { font-size: 12px; color: #666; }
+    </style>
+  </head>
+  <body>
+    <h2>SellerFlow Capture 设置</h2>
+    <label for="workbenchUrl">工作台地址</label>
+    <input id="workbenchUrl" type="url" placeholder="http://localhost:3000" />
+    <p>发送到工作台时打开该地址并注入商品。线上部署填你的 Vercel 域名。</p>
+    <button id="save">保存</button>
+    <p id="msg"></p>
+    <script src="options.js"></script>
+  </body>
+</html>

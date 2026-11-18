@@ -243,6 +243,20 @@ tbody tr.selected { background: var(--primary-soft); }
 .bulk-bar button:hover:not(:disabled) { border-color: #818cf8; color: #c7d2fe; }
 .bulk-bar button.btn-primary { background: var(--primary); border-color: var(--primary); }
 
+.pricing-quick {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  background: #1e2236; color: #e2e8f0;
+  border-radius: var(--radius);
+  padding: 8px 12px; margin-top: 8px;
+  border: 1px solid #343b63;
+}
+.pricing-quick .label { font-weight: 600; font-size: 13px; margin-right: 4px; }
+.pricing-quick input, .pricing-quick select {
+  background: #2b3044; border: 1px solid #3a4058; color: #fff;
+  border-radius: 6px; padding: 5px 8px; font-size: 12px;
+}
+.pricing-quick button { background: #2b3044; border-color: #3a4058; color: #fff; }
+
 /* ===== Panels / Modal ===== */
 .overlay {
   position: fixed;

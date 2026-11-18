@@ -1,31 +1,43 @@
-# SellerFlow AI — Chrome 采集插件（M1 MVP）
+# SellerFlow AI — Chrome 采集插件（M1）
 
-## 能力（v0.1.0）
+## v0.2.0 能力
 
-- 支持 **AliExpress** 商品详情页（`/item/*`）
-- 用户点击插件图标 → **主动采集** 标题、价格、部分描述、主图 URL
-- 导出 **JSON 文件** → 在工作台 **「采集 JSON」** 导入
+- AliExpress 商品详情页 `/item/*` 采集
+- Popup：**字段可编辑**、**图片多选**（主图标记）、变体数量提示
+- **发送到工作台**：向已打开的 `localhost:3000`（可配置）注入商品
+- **下载 JSON**：与工作台「采集 JSON」导入兼容
 
-## 加载方式（开发）
+## 安装（开发）
 
-1. Chrome → `chrome://extensions` → 开启「开发者模式」
-2. 「加载已解压的扩展程序」→ 选择本目录 `extension/`
-3. 打开任意 AliExpress 商品页 → 点击插件 → **下载 JSON**
-4. 本地 `npm run dev` → 工作台 → **采集 JSON**
+1. Chrome → `chrome://extensions` → 开发者模式
+2. **加载已解压的扩展程序** → 选择本目录 `extension/`
+3. 本地 `npm run dev` 打开工作台
+4. 打开 AliExpress 商品页 → 点击插件图标 → **发送到工作台**
+
+## 配置
+
+插件 → **设置**（或右键扩展选项）→ 填写工作台 URL（如 `https://your-app.vercel.app`）。
+
+> 线上域名需在 `manifest.json` 的 `host_permissions` 中增加对应 origin，并重新加载扩展。
+
+## 流程
+
+```text
+商品页 → Capture → 编辑/选图 → 发送到工作台 → AI / 加价 / 校验 / 导出
+```
 
 ## 目录
 
 ```text
-manifest.json       # MV3
-content.js          # 页面内提取（仅响应 popup 消息，原则 P3）
-background.js       # SW 占位
-adapters/           # 站点适配器（与 content 逻辑将逐步合并）
-popup/              # 采集预览与下载
+manifest.json
+content.js          # DOM 提取
+popup/              # 预览 UI
+options.html        # 工作台 URL
+adapters/           # 站点适配（逐步与 content 合并）
 ```
 
-## 下一步（M1 / M2）
+## 路线图
 
-- [ ] Alibaba、CJdropshipping 适配器
-- [ ] Popup 内编辑字段 + 图片勾选
-- [ ] `POST /api/capture` + 登录态（替代 JSON 文件）
-- [ ] 失败上报与适配器版本号
+- [ ] Alibaba / CJ 适配器
+- [ ] `optional_host_permissions` + 动态授权线上域名
+- [ ] `POST /api/capture` + 登录（M2，替代仅注入 localStorage）
